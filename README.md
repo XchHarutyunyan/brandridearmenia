@@ -1,4 +1,4 @@
-# BrandRideArmenia
+# Brand Ride Armenia
 
 A marketplace for real-world advertising spaces in Armenia. List cars, buildings, shop windows, and walls—companies find and rent them for ads.
 

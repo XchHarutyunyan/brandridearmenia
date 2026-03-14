@@ -10,7 +10,7 @@ import type { Locale } from "@/context/LocaleContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "BrandRideArmenia — Advertising Spaces Marketplace",
+  title: "Brand Ride Armenia — Advertising Spaces Marketplace",
   description:
     "Turn cars and spaces into advertising opportunities. Connect with real-world advertising spaces in Armenia.",
 };
@@ -21,7 +21,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
-  const locale = (cookieStore.get("locale")?.value as Locale) ?? "en";
+  const locale = (cookieStore.get("locale")?.value as Locale) ?? "hy";
 
   return (
     <html lang={locale}>

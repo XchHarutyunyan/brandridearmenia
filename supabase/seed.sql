@@ -1,4 +1,4 @@
--- BrandRideArmenia: seed listings (100+ rows)
+-- Brand Ride Armenia: seed listings (100+ rows)
 -- Run AFTER schema.sql and AFTER at least one user exists in auth.users.
 -- In Supabase: sign up once in the app, then run this in SQL Editor.
 

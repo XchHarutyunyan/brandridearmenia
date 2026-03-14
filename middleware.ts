@@ -28,8 +28,16 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
+// Only run session refresh on auth-related routes. Public routes (/, /listings, /requests, etc.)
+// skip middleware so navigation stays instant.
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/dashboard",
+    "/add-listing",
+    "/edit-listing/:path*",
+    "/post-request",
+    "/edit-request/:path*",
+    "/login",
+    "/register",
   ],
 };

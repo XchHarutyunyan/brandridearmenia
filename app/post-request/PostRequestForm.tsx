@@ -1,13 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabaseClient";
 import { useLocale } from "@/context/LocaleContext";
 import { CATEGORIES } from "@/lib/types";
+import type { AdvertisingRequest } from "@/lib/types";
 
-export default function PostRequestForm() {
+interface PostRequestFormProps {
+  requestId?: string;
+  initialData?: AdvertisingRequest | null;
+}
+
+export default function PostRequestForm({ requestId, initialData }: PostRequestFormProps) {
   const router = useRouter();
   const { t } = useLocale();
   const supabase = createClient();
@@ -24,11 +30,34 @@ export default function PostRequestForm() {
     contact_phone: "",
     contact_email: "",
   });
+  const isEdit = Boolean(requestId && initialData);
+
+  useEffect(() => {
+    if (initialData) {
+      setForm({
+        title: initialData.title ?? "",
+        city: initialData.city ?? "",
+        category: initialData.category ?? "cars",
+        budget: initialData.budget != null ? String(initialData.budget) : "",
+        duration: initialData.duration ?? "",
+        description: initialData.description ?? "",
+        contact_phone: initialData.contact_phone ?? "",
+        contact_email: initialData.contact_email ?? "",
+      });
+    }
+  }, [initialData]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
     setLoading(true);
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      setError(t("addSpace.mustLogin"));
+      setLoading(false);
+      return;
+    }
 
     const budgetNum = Math.round(Number(form.budget)) || 0;
     if (budgetNum <= 0) {
@@ -37,7 +66,7 @@ export default function PostRequestForm() {
       return;
     }
 
-    const { error: insertError } = await supabase.from("advertising_requests").insert({
+    const payload = {
       title: form.title.trim(),
       description: form.description.trim() || null,
       city: form.city.trim(),
@@ -46,6 +75,29 @@ export default function PostRequestForm() {
       duration: form.duration.trim() || null,
       contact_phone: form.contact_phone.trim() || null,
       contact_email: form.contact_email.trim() || null,
+    };
+
+    if (isEdit && requestId) {
+      const { error: updateError } = await supabase
+        .from("advertising_requests")
+        .update(payload)
+        .eq("id", requestId)
+        .eq("user_id", user.id);
+
+      if (updateError) {
+        setError(updateError.message);
+        setLoading(false);
+        return;
+      }
+      router.push("/dashboard");
+      router.refresh();
+      setLoading(false);
+      return;
+    }
+
+    const { error: insertError } = await supabase.from("advertising_requests").insert({
+      ...payload,
+      user_id: user.id,
     });
 
     if (insertError) {
@@ -59,7 +111,7 @@ export default function PostRequestForm() {
     router.refresh();
   }
 
-  if (success) {
+  if (success && !isEdit) {
     return (
       <motion.div
         initial={{ opacity: 0, y: 8 }}
@@ -97,8 +149,8 @@ export default function PostRequestForm() {
       onSubmit={handleSubmit}
       className="mt-8 rounded-card bg-white p-8 shadow-soft"
     >
-      <h1 className="text-3xl font-bold text-text">{t("postRequest.title")}</h1>
-      <p className="mt-2 text-slate-600">{t("postRequest.subtitle")}</p>
+      <h1 className="text-3xl font-bold text-text">{isEdit ? t("postRequest.editTitle") : t("postRequest.title")}</h1>
+      <p className="mt-2 text-slate-600">{isEdit ? t("postRequest.editSubtitle") : t("postRequest.subtitle")}</p>
 
       {error && (
         <div className="mt-6 rounded-lg bg-red-50 p-4 text-sm text-red-700">{error}</div>
@@ -226,7 +278,7 @@ export default function PostRequestForm() {
           whileTap={{ scale: 0.99 }}
           className="w-full rounded-button bg-primary py-3 font-medium text-white shadow-soft hover:bg-blue-600 disabled:opacity-60"
         >
-          {loading ? t("postRequest.saving") : t("postRequest.submit")}
+          {loading ? t("postRequest.saving") : isEdit ? t("postRequest.saveChanges") : t("postRequest.submit")}
         </motion.button>
       </div>
     </motion.form>

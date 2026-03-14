@@ -1,4 +1,4 @@
--- BrandRideArmenia: two-sided marketplace
+-- Brand Ride Armenia: two-sided marketplace
 -- 1. Extend listings categories and add multiple photos
 -- 2. Add advertising_requests table
 

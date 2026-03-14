@@ -22,7 +22,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between">
           <p className="max-w-md text-center text-slate-600 md:text-left">
-            BrandRideArmenia — {t("home.heroTitle")}
+            Brand Ride Armenia — {t("home.heroTitle")}
           </p>
           <ul className="flex items-center gap-8">
             {footerLinks.map((link) => (
@@ -38,7 +38,7 @@ export default function Footer() {
           </ul>
         </div>
         <p className="mt-8 text-center text-sm text-slate-400">
-          © {new Date().getFullYear()} BrandRideArmenia. All rights reserved.
+          © {new Date().getFullYear()} Brand Ride Armenia. All rights reserved.
         </p>
       </div>
     </motion.footer>

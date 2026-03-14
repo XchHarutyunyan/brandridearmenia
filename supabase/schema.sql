@@ -1,4 +1,4 @@
--- BrandRideArmenia: listings table
+-- Brand Ride Armenia: listings table
 -- Run this in Supabase SQL Editor after enabling Auth.
 
 -- Create listings table (users are managed by Supabase Auth)
@@ -57,6 +57,7 @@ create table if not exists public.advertising_requests (
   duration text,
   contact_phone text,
   contact_email text,
+  user_id uuid references auth.users(id) on delete cascade,
   created_at timestamptz not null default now()
 );
 
@@ -65,9 +66,19 @@ alter table public.advertising_requests enable row level security;
 create policy "Advertising requests are viewable by everyone"
   on public.advertising_requests for select using (true);
 
-create policy "Anyone can create advertising requests"
-  on public.advertising_requests for insert with check (true);
+create policy "Authenticated users can create own requests"
+  on public.advertising_requests for insert
+  with check (auth.uid() = user_id);
+
+create policy "Users can update own requests"
+  on public.advertising_requests for update
+  using (auth.uid() = user_id);
+
+create policy "Users can delete own requests"
+  on public.advertising_requests for delete
+  using (auth.uid() = user_id);
 
 create index if not exists advertising_requests_created_at_idx on public.advertising_requests(created_at desc);
 create index if not exists advertising_requests_category_idx on public.advertising_requests(category);
 create index if not exists advertising_requests_city_idx on public.advertising_requests(city);
+create index if not exists advertising_requests_user_id_idx on public.advertising_requests(user_id);

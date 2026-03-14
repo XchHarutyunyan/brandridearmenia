@@ -34,6 +34,7 @@ export interface AdvertisingRequest {
   duration: string | null;
   contact_phone: string | null;
   contact_email: string | null;
+  user_id?: string | null;
   created_at: string;
 }
 

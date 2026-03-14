@@ -7,11 +7,24 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login?redirect=/dashboard");
 
-  const { data: listings } = await supabase
-    .from("listings")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+  const [listingsRes, requestsRes] = await Promise.all([
+    supabase
+      .from("listings")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("advertising_requests")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false }),
+  ]);
 
-  return <DashboardClient listings={listings ?? []} />;
+  return (
+    <DashboardClient
+      currentUserId={user.id}
+      listings={listingsRes.data ?? []}
+      requests={requestsRes.data ?? []}
+    />
+  );
 }

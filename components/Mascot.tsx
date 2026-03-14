@@ -12,141 +12,105 @@ interface MascotProps {
 }
 
 export default function Mascot({ className = "", size = 120, wave = false }: MascotProps) {
+  const h = size * (80 / 120);
+
   return (
     <motion.div
       className={className}
       initial={{ y: 0 }}
-      animate={{ y: [0, -10, 0] }}
+      animate={{ y: [0, -8, 0] }}
       transition={floatTransition}
-      whileHover={{ scale: 1.05, y: -4 }}
+      whileHover={{ scale: 1.06, y: -4, rotate: 2 }}
     >
       <motion.svg
         width={size}
-        height={size * 0.7}
-        viewBox="0 0 160 112"
+        height={h}
+        viewBox="0 0 120 80"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Car body - friendly rounded shape */}
+        {/* Subtle building silhouettes (advertising spaces) */}
+        <motion.g opacity={0.12} fill="#0f172a">
+          <rect x="4" y="52" width="14" height="24" rx="2" />
+          <rect x="20" y="44" width="12" height="32" rx="2" />
+          <rect x="102" y="48" width="14" height="28" rx="2" />
+          <rect x="88" y="54" width="10" height="22" rx="2" />
+        </motion.g>
+
+        {/* Main body — friendly blob (brand/connector) */}
         <motion.ellipse
-          cx="80"
-          cy="72"
-          rx="52"
-          ry="28"
-          fill="#2563EB"
-          stroke="#1d4ed8"
-          strokeWidth="2"
-        />
-        <motion.rect
-          x="35"
-          y="52"
-          width="90"
-          height="28"
-          rx="14"
-          fill="#2563EB"
-          stroke="#1d4ed8"
-          strokeWidth="2"
-        />
-        {/* Car top/cabin */}
-        <motion.ellipse
-          cx="80"
+          cx="52"
           cy="48"
-          rx="32"
-          ry="20"
-          fill="#3b82f6"
-          stroke="#2563eb"
+          rx="26"
+          ry="28"
+          fill="#2563eb"
+          stroke="#1d4ed8"
           strokeWidth="2"
         />
-        {/* Windshield */}
-        <path
-          d="M55 48 Q80 38 105 48 L105 58 Q80 52 55 58 Z"
-          fill="#93c5fd"
-          fillOpacity="0.6"
-        />
-        {/* Eyes */}
         <motion.ellipse
-          cx="65"
-          cy="42"
-          rx="8"
-          ry="10"
-          fill="#0F172A"
-          animate={wave ? { scaleY: [1, 0.2, 1] } : {}}
+          cx="52"
+          cy="48"
+          rx="22"
+          ry="24"
+          fill="#3b82f6"
+          fillOpacity={0.4}
+          stroke="none"
+        />
+
+        {/* Face — eyes */}
+        <motion.ellipse
+          cx="44"
+          cy="44"
+          rx="5"
+          ry="6"
+          fill="#0f172a"
+          animate={wave ? { scaleY: [1, 0.15, 1] } : {}}
           transition={blinkTransition}
+          style={{ transformOrigin: "44px 44px" }}
         />
         <motion.ellipse
-          cx="95"
-          cy="42"
-          rx="8"
-          ry="10"
-          fill="#0F172A"
-          animate={wave ? { scaleY: [1, 0.2, 1] } : {}}
+          cx="60"
+          cy="44"
+          rx="5"
+          ry="6"
+          fill="#0f172a"
+          animate={wave ? { scaleY: [1, 0.15, 1] } : {}}
           transition={blinkTransition}
+          style={{ transformOrigin: "60px 44px" }}
         />
-        {/* Eye shine */}
-        <circle cx="67" cy="40" r="2" fill="white" />
-        <circle cx="97" cy="40" r="2" fill="white" />
+        <circle cx="45" cy="42.5" r="1.2" fill="white" />
+        <circle cx="61" cy="42.5" r="1.2" fill="white" />
+
         {/* Smile */}
         <motion.path
-          d="M68 52 Q80 58 92 52"
-          stroke="#0F172A"
-          strokeWidth="2"
+          d="M42 52 Q52 58 62 52"
+          stroke="#0f172a"
+          strokeWidth="1.8"
           strokeLinecap="round"
           fill="none"
-          animate={wave ? { d: ["M68 52 Q80 58 92 52", "M68 54 Q80 50 92 54", "M68 52 Q80 58 92 52"] } : {}}
+          animate={
+            wave
+              ? {
+                d: [
+                  "M42 52 Q52 58 62 52",
+                  "M42 53.5 Q52 49 62 53.5",
+                  "M42 52 Q52 58 62 52",
+                ],
+              }
+              : {}
+          }
           transition={{ duration: 0.5, repeat: wave ? Infinity : 0, repeatDelay: 2 }}
         />
-        {/* Wheels */}
-        <motion.circle
-          cx="48"
-          cy="78"
-          r="12"
-          fill="#334155"
-          stroke="#1e293b"
-          strokeWidth="2"
-        />
-        <circle cx="48" cy="78" r="6" fill="#64748b" />
-        <motion.circle
-          cx="112"
-          cy="78"
-          r="12"
-          fill="#334155"
-          stroke="#1e293b"
-          strokeWidth="2"
-        />
-        <circle cx="112" cy="78" r="6" fill="#64748b" />
-        {/* Headlights (glow) */}
-        <motion.ellipse
-          cx="28"
-          cy="68"
-          rx="4"
-          ry="6"
-          fill="#fef08a"
-          opacity="0.9"
-          animate={{ opacity: [0.9, 0.5, 0.9] }}
+
+        {/* Optional small banner ribbon (accent) */}
+        <motion.path
+          d="M28 38 L32 34 L36 38 L32 42 Z"
+          fill="#22c55e"
+          stroke="#16a34a"
+          strokeWidth="1"
+          animate={{ opacity: [0.9, 0.6, 0.9] }}
           transition={{ duration: 2, repeat: Infinity }}
         />
-        <motion.ellipse
-          cx="132"
-          cy="68"
-          rx="4"
-          ry="6"
-          fill="#fef08a"
-          opacity="0.9"
-          animate={{ opacity: [0.9, 0.5, 0.9] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
-        {/* Wave hand - small flag or arm */}
-        {wave && (
-          <motion.g
-            initial={{ rotate: 0 }}
-            animate={{ rotate: [0, 15, -10, 0] }}
-            transition={{ duration: 1.2, repeat: Infinity, repeatDelay: 1 }}
-            style={{ transformOrigin: "100px 35px" }}
-          >
-            <rect x="98" y="32" width="14" height="6" rx="2" fill="#22C55E" />
-            <circle cx="112" cy="35" r="3" fill="#22C55E" />
-          </motion.g>
-        )}
       </motion.svg>
     </motion.div>
   );

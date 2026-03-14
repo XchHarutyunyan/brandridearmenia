@@ -24,7 +24,12 @@ export default function RequestsClient({
       {initialRequests.length > 0 ? (
         <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {initialRequests.map((request, i) => (
-            <RequestCard key={request.id} request={request} index={i} />
+            <RequestCard
+              key={request.id}
+              request={request}
+              index={i}
+              detailUrl={`/requests/${request.id}`}
+            />
           ))}
         </div>
       ) : (

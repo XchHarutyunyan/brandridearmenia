@@ -1,13 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabaseClient";
 import { useLocale } from "@/context/LocaleContext";
 import { CATEGORIES } from "@/lib/types";
+import type { Listing } from "@/lib/types";
 
-export default function AddListingForm() {
+interface AddListingFormProps {
+  listingId?: string;
+  initialData?: Listing | null;
+}
+
+export default function AddListingForm({ listingId, initialData }: AddListingFormProps) {
   const router = useRouter();
   const { t } = useLocale();
   const supabase = createClient();
@@ -23,6 +29,21 @@ export default function AddListingForm() {
     contact_phone: "",
   });
   const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const isEdit = Boolean(listingId && initialData);
+
+  useEffect(() => {
+    if (initialData) {
+      setForm({
+        title: initialData.title ?? "",
+        category: initialData.category ?? "cars",
+        city: initialData.city ?? "",
+        price: initialData.price != null ? String(initialData.price) : "",
+        description: initialData.description ?? "",
+        contact_email: initialData.contact_email ?? "",
+        contact_phone: initialData.contact_phone ?? "",
+      });
+    }
+  }, [initialData]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -36,7 +57,15 @@ export default function AddListingForm() {
       return;
     }
 
-    const photoUrls: string[] = [];
+    const existingUrls: string[] = isEdit && initialData
+      ? (initialData.photo_urls && initialData.photo_urls.length > 0
+          ? [...initialData.photo_urls]
+          : initialData.image_url
+            ? [initialData.image_url]
+            : [])
+      : [];
+
+    const newUrls: string[] = [];
     for (const imageFile of imageFiles) {
       const ext = imageFile.name.split(".").pop() || "jpg";
       const path = `${user.id}/${crypto.randomUUID()}.${ext}`;
@@ -49,12 +78,13 @@ export default function AddListingForm() {
         return;
       }
       const { data: urlData } = supabase.storage.from("listings").getPublicUrl(path);
-      photoUrls.push(urlData.publicUrl);
+      newUrls.push(urlData.publicUrl);
     }
 
+    const photoUrls = [...existingUrls, ...newUrls];
     const imageUrl = photoUrls[0] ?? null;
 
-    const { error: insertError } = await supabase.from("listings").insert({
+    const payload = {
       title: form.title.trim(),
       category: form.category,
       city: form.city.trim(),
@@ -64,13 +94,31 @@ export default function AddListingForm() {
       photo_urls: photoUrls.length > 0 ? photoUrls : null,
       contact_email: form.contact_email.trim() || null,
       contact_phone: form.contact_phone.trim() || null,
-      user_id: user.id,
-    });
+    };
 
-    if (insertError) {
-      setError(insertError.message);
-      setLoading(false);
-      return;
+    if (isEdit && listingId) {
+      const { error: updateError } = await supabase
+        .from("listings")
+        .update(payload)
+        .eq("id", listingId)
+        .eq("user_id", user.id);
+
+      if (updateError) {
+        setError(updateError.message);
+        setLoading(false);
+        return;
+      }
+    } else {
+      const { error: insertError } = await supabase.from("listings").insert({
+        ...payload,
+        user_id: user.id,
+      });
+
+      if (insertError) {
+        setError(insertError.message);
+        setLoading(false);
+        return;
+      }
     }
 
     router.push("/dashboard");
@@ -94,8 +142,8 @@ export default function AddListingForm() {
       onSubmit={handleSubmit}
       className="mt-8 rounded-card bg-white p-8 shadow-soft"
     >
-      <h1 className="text-3xl font-bold text-text">{t("addSpace.title")}</h1>
-      <p className="mt-2 text-slate-600">{t("addSpace.subtitle")}</p>
+      <h1 className="text-3xl font-bold text-text">{isEdit ? t("addSpace.editTitle") : t("addSpace.title")}</h1>
+      <p className="mt-2 text-slate-600">{isEdit ? t("addSpace.editSubtitle") : t("addSpace.subtitle")}</p>
 
       {error && (
         <div className="mt-6 rounded-lg bg-red-50 p-4 text-sm text-red-700">{error}</div>
@@ -235,7 +283,7 @@ export default function AddListingForm() {
           whileTap={{ scale: 0.99 }}
           className="w-full rounded-button bg-primary py-3 font-medium text-white shadow-soft hover:bg-blue-600 disabled:opacity-60"
         >
-          {loading ? t("addSpace.saving") : t("addSpace.submit")}
+          {loading ? t("addSpace.saving") : isEdit ? t("addSpace.saveChanges") : t("addSpace.submit")}
         </motion.button>
       </div>
     </motion.form>

@@ -15,7 +15,7 @@
   },
   "home": {
     "heroTitle": "Turn cars and spaces into advertising opportunities.",
-    "heroSubtitle": "BrandRideArmenia connects companies with real-world advertising spaces like cars, buildings, shop windows and more.",
+    "heroSubtitle": "Brand Ride Armenia connects companies with real-world advertising spaces like cars, buildings, shop windows and more.",
     "browseSpaces": "Find advertising spaces",
     "addYourSpace": "Add your space",
     "howItWorks": "How it works",
@@ -41,6 +41,9 @@
     "noListings": "No listings yet. Be the first to add one!",
     "addListing": "Add Listing",
     "viewAllListings": "View all spaces",
+    "latestRequests": "Latest Requests",
+    "latestRequestsSubtitle": "Recently posted advertising requests.",
+    "viewAllRequests": "View all requests",
     "ctaTitle": "Start earning with your space",
     "ctaSubtitle": "List your car, building, or shop window and let brands find you."
   },
@@ -65,11 +68,15 @@
     "budget": "Budget",
     "contact": "Contact",
     "noResults": "No requests yet.",
-    "perMonth": "/month"
+    "perMonth": "/month",
+    "viewDetails": "View details"
   },
   "addSpace": {
     "title": "Add Space",
     "subtitle": "List your advertising space.",
+    "editTitle": "Edit Space",
+    "editSubtitle": "Update your listing.",
+    "saveChanges": "Save changes",
     "titleLabel": "Title",
     "titlePlaceholder": "e.g. Mercedes E-Class advertising space",
     "category": "Category",
@@ -91,6 +98,9 @@
   "postRequest": {
     "title": "Post Request",
     "subtitle": "Looking for advertising space? Tell us what you need.",
+    "editTitle": "Edit Request",
+    "editSubtitle": "Update your advertising request.",
+    "saveChanges": "Save changes",
     "titleLabel": "Title",
     "titlePlaceholder": "e.g. Coffee Brand Campaign",
     "city": "City",
@@ -112,24 +122,38 @@
     "backToListings": "Back to spaces",
     "noContact": "Contact details not provided."
   },
+  "requestDetail": {
+    "description": "Description",
+    "backToRequests": "Back to requests"
+  },
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "Manage your listings.",
     "addNew": "Add new listing",
     "noListings": "You don't have any listings yet.",
-    "addFirst": "Add new listing"
+    "addFirst": "Add new listing",
+    "mySpaces": "My Spaces",
+    "myRequests": "My Requests",
+    "noSpaces": "You haven't added any spaces yet.",
+    "noRequests": "You haven't posted any advertising requests yet.",
+    "addSpace": "Add Space",
+    "postRequest": "Post Request",
+    "deleteConfirm": "Are you sure you want to delete this listing?"
+  },
+  "common": {
+    "loading": "Loading...",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel"
   },
   "about": {
-    "title": "About BrandRideArmenia",
-    "intro": "BrandRideArmenia is a marketplace connecting businesses with real-world advertising spaces across Armenia. List your car, building, shop window, or wall and earn passive income while brands get visible, local reach.",
+    "title": "About Brand Ride Armenia",
+    "intro": "Brand Ride Armenia is a marketplace connecting businesses with real-world advertising spaces across Armenia. List your car, building, shop window, or wall and earn passive income while brands get visible, local reach.",
     "belief": "We believe every surface can tell a story. Whether you own a vehicle, a building facade, or a storefront, you can turn it into an opportunity—and we make it simple."
   },
   "contact": {
     "title": "Contact",
     "text": "For partnerships or support, reach out at"
-  },
-  "common": {
-    "loading": "Loading..."
   },
   "categories": {
     "cars": "Cars",

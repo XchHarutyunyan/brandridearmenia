@@ -4,11 +4,13 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Sparkles, Layout, Car, Send, Target, Zap } from "lucide-react";
 import { useLocale } from "@/context/LocaleContext";
+import AnimatedBackground from "@/components/AnimatedBackground";
 import ListingCard from "@/components/ListingCard";
+import RequestCard from "@/components/RequestCard";
 import Mascot from "@/components/Mascot";
 import { CATEGORIES } from "@/lib/types";
 import { CATEGORY_ICONS } from "@/lib/categories";
-import type { Listing } from "@/lib/types";
+import type { Listing, AdvertisingRequest } from "@/lib/types";
 
 const STEP_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   Sparkles,
@@ -76,7 +78,12 @@ export function CategoryCard({
   );
 }
 
-export default function HomeContent({ initialListings }: { initialListings: Listing[] }) {
+interface HomeContentProps {
+  initialListings: Listing[];
+  initialRequests: AdvertisingRequest[];
+}
+
+export default function HomeContent({ initialListings, initialRequests }: HomeContentProps) {
   const { t } = useLocale();
 
   const ownerSteps = [
@@ -92,10 +99,15 @@ export default function HomeContent({ initialListings }: { initialListings: List
   ];
 
   return (
-    <>
-      <section className="relative overflow-hidden border-b border-slate-200/60 bg-white px-6 pb-24 pt-16 md:pb-32 md:pt-24">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,#e0e7ff40,transparent)]" />
-        <div className="relative mx-auto max-w-7xl">
+    <div className="relative">
+      {/* Full-page animation: fixed so it stays visible behind all sections while scrolling */}
+      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden>
+        <AnimatedBackground variant="fullPage" className="inset-0 min-h-screen w-full" />
+      </div>
+      <section className="relative overflow-hidden border-b border-slate-200/60 bg-white/90 px-6 pb-24 pt-16 md:pb-32 md:pt-24">
+        {/* Hero-only intense layer — keeps current "wow" effect */}
+        <AnimatedBackground variant="hero" className="z-0" />
+        <div className="relative z-10 mx-auto max-w-7xl">
           <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
             <div className="flex-1 text-center lg:text-left">
               <motion.h1
@@ -146,13 +158,13 @@ export default function HomeContent({ initialListings }: { initialListings: List
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex shrink-0 justify-center lg:justify-end"
             >
-              <Mascot size={160} wave />
+              <Mascot size={220} wave />
             </motion.div>
           </div>
         </div>
       </section>
 
-      <section className="border-b border-slate-200/60 bg-secondary px-6 py-20">
+      <section className="relative border-b border-slate-200/60 bg-secondary/85 px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <motion.h2
             initial={{ opacity: 0, y: 8 }}
@@ -173,7 +185,7 @@ export default function HomeContent({ initialListings }: { initialListings: List
         </div>
       </section>
 
-      <section className="border-b border-slate-200/60 bg-white px-6 py-20">
+      <section className="relative border-b border-slate-200/60 bg-white/85 px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <motion.h2
             initial={{ opacity: 0, y: 8 }}
@@ -194,7 +206,7 @@ export default function HomeContent({ initialListings }: { initialListings: List
         </div>
       </section>
 
-      <section className="border-b border-slate-200/60 bg-secondary px-6 py-20">
+      <section className="relative border-b border-slate-200/60 bg-secondary/85 px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <h2 className="text-center text-3xl font-bold text-text md:text-4xl">
             {t("home.categories")}
@@ -215,7 +227,7 @@ export default function HomeContent({ initialListings }: { initialListings: List
         </div>
       </section>
 
-      <section className="border-b border-slate-200/60 bg-white px-6 py-20">
+      <section className="relative border-b border-slate-200/60 bg-white/85 px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <h2 className="text-center text-3xl font-bold text-text md:text-4xl">
             {t("home.latestListings")}
@@ -245,7 +257,42 @@ export default function HomeContent({ initialListings }: { initialListings: List
         </div>
       </section>
 
-      <section className="bg-white px-6 py-24">
+      <section className="relative border-b border-slate-200/60 bg-secondary/85 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <h2 className="text-center text-3xl font-bold text-text md:text-4xl">
+            {t("home.latestRequests")}
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-center text-slate-600">
+            {t("home.latestRequestsSubtitle")}
+          </p>
+          {initialRequests.length > 0 ? (
+            <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {initialRequests.map((request, i) => (
+                <RequestCard
+                  key={request.id}
+                  request={request}
+                  index={i}
+                  detailUrl={`/requests/${request.id}`}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="mt-16 rounded-card bg-white p-12 text-center shadow-soft">
+              <p className="text-slate-600">{t("requests.noResults")}</p>
+              <Link href="/post-request" className="mt-4 inline-block rounded-button bg-primary px-5 py-2.5 text-white hover:bg-blue-600">
+                {t("postRequest.title")}
+              </Link>
+            </div>
+          )}
+          <div className="mt-12 text-center">
+            <Link href="/requests" className="text-primary font-medium hover:underline">
+              {t("home.viewAllRequests")} →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative bg-white/85 px-6 py-24">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold text-text md:text-4xl">
             {t("home.ctaTitle")}
@@ -273,6 +320,6 @@ export default function HomeContent({ initialListings }: { initialListings: List
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

@@ -1,23 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { User, LogIn, LogOut, Globe } from "lucide-react";
+import Mascot from "@/components/Mascot";
 import { createClient } from "@/lib/supabaseClient";
 import { useEffect, useState } from "react";
 import { useLocale } from "@/context/LocaleContext";
 import type { Locale } from "@/context/LocaleContext";
 
-const navLinks: { href: string; key: string }[] = [
-  { href: "/", key: "nav.home" },
+const publicNavLinks: { href: string; key: string }[] = [
   { href: "/listings", key: "nav.spaces" },
   { href: "/requests", key: "nav.requests" },
+];
+
+const protectedNavLinks: { href: string; key: string }[] = [
   { href: "/add-listing", key: "nav.addSpace" },
   { href: "/post-request", key: "nav.postRequest" },
-  { href: "/about", key: "nav.about" },
-  { href: "/contact", key: "nav.contact" },
 ];
+
+const PROTECTED_PATHS = ["/dashboard", "/add-listing", "/post-request"] as const;
+function isProtectedPath(pathname: string): boolean {
+  if (PROTECTED_PATHS.some((p) => pathname === p)) return true;
+  if (pathname.startsWith("/edit-listing/") || pathname.startsWith("/edit-request/")) return true;
+  return false;
+}
 
 const localeLabels: Record<Locale, string> = {
   en: "EN",
@@ -27,6 +35,7 @@ const localeLabels: Record<Locale, string> = {
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { t, locale, setLocale } = useLocale();
   const [user, setUser] = useState<{ email?: string } | null>(null);
   const [localeOpen, setLocaleOpen] = useState(false);
@@ -43,7 +52,9 @@ export default function Navbar() {
   }, [supabase.auth]);
 
   async function handleSignOut() {
+    const wasOnProtectedPage = isProtectedPath(pathname);
     await supabase.auth.signOut();
+    if (wasOnProtectedPage) router.push("/");
   }
 
   const nextLocale = locale === "en" ? "ru" : locale === "ru" ? "hy" : "en";
@@ -58,12 +69,14 @@ export default function Navbar() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4">
         <Link
           href="/"
-          className="text-xl font-semibold tracking-tight text-text hover:text-primary transition-colors"
+          className="inline-flex items-center gap-2 text-text hover:text-primary transition-colors rounded"
+          aria-label="Brand Ride Armenia — Home"
         >
-          BrandRideArmenia
+          <Mascot size={48} className="shrink-0" />
+          <span className="text-xl font-semibold tracking-tight">Brand Ride Armenia</span>
         </Link>
         <ul className="hidden md:flex items-center gap-6">
-          {navLinks.map((link) => (
+          {publicNavLinks.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
@@ -75,6 +88,19 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
+          {user &&
+            protectedNavLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors ${
+                    pathname === link.href ? "text-primary" : "text-slate-600 hover:text-text"
+                  }`}
+                >
+                  {t(link.key)}
+                </Link>
+              </li>
+            ))}
         </ul>
         <div className="flex items-center gap-3">
           <div className="relative">

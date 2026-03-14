@@ -16,7 +16,7 @@ export default function RequestDetailClient({ request }: { request: AdvertisingR
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="mx-auto max-w-3xl px-6 py-12"
+      className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12 min-w-0"
     >
       <div className="overflow-hidden rounded-card bg-white shadow-soft-lg">
         <div className="p-8 md:p-10">

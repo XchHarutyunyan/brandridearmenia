@@ -10,8 +10,8 @@ export default function LoginPage({
   const redirectTo = params.redirect ?? "/dashboard";
 
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-6 py-16">
-      <div className="rounded-card bg-white p-8 shadow-soft-lg">
+    <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-10 sm:px-6 sm:py-16 min-w-0">
+      <div className="rounded-card bg-white p-5 sm:p-8 shadow-soft-lg">
         <h1 className="text-2xl font-bold text-text">Log in</h1>
         <p className="mt-2 text-slate-600">Use your email and password to sign in.</p>
         <LoginForm redirectTo={redirectTo} />

@@ -60,8 +60,8 @@ export default function ListingsClient({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <h1 className="text-3xl font-bold text-text md:text-4xl">{t("spaces.title")}</h1>
-      <p className="mt-2 text-slate-600">{t("spaces.subtitle")}</p>
+      <h1 className="text-2xl font-bold text-text sm:text-3xl md:text-4xl">{t("spaces.title")}</h1>
+      <p className="mt-2 text-sm sm:text-base text-slate-600">{t("spaces.subtitle")}</p>
 
       <div className="mt-8 flex flex-wrap items-center gap-4">
         <motion.button
@@ -158,7 +158,7 @@ export default function ListingsClient({
       </div>
 
       {initialListings.length > 0 ? (
-        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 sm:mt-12 grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3 min-w-0">
           {initialListings.map((listing, i) => (
             <ListingCard key={listing.id} listing={listing} index={i} />
           ))}

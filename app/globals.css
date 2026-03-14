@@ -9,8 +9,13 @@
   --text: #0f172a;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   color: var(--text);
   background: var(--secondary);
+  min-width: 0;
 }
 

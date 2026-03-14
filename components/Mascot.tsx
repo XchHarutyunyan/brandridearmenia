@@ -17,17 +17,19 @@ export default function Mascot({ className = "", size = 120, wave = false }: Mas
   return (
     <motion.div
       className={className}
+      style={{ maxWidth: size }}
       initial={{ y: 0 }}
       animate={{ y: [0, -8, 0] }}
       transition={floatTransition}
       whileHover={{ scale: 1.06, y: -4, rotate: 2 }}
     >
       <motion.svg
-        width={size}
-        height={h}
+        width="100%"
+        height="auto"
         viewBox="0 0 120 80"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className="block"
       >
         {/* Subtle building silhouettes (advertising spaces) */}
         <motion.g opacity={0.12} fill="#0f172a">

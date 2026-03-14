@@ -18,11 +18,11 @@ export default function RequestsClient({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <h1 className="text-3xl font-bold text-text md:text-4xl">{t("requests.title")}</h1>
-      <p className="mt-2 text-slate-600">{t("requests.subtitle")}</p>
+      <h1 className="text-2xl font-bold text-text sm:text-3xl md:text-4xl">{t("requests.title")}</h1>
+      <p className="mt-2 text-sm sm:text-base text-slate-600">{t("requests.subtitle")}</p>
 
       {initialRequests.length > 0 ? (
-        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 sm:mt-12 grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3 min-w-0">
           {initialRequests.map((request, i) => (
             <RequestCard
               key={request.id}

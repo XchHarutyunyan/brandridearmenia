@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabaseClient";
 import { useLocale } from "@/context/LocaleContext";
 import { CATEGORIES } from "@/lib/types";
-import type { AdvertisingRequest } from "@/lib/types";
+import type { AdvertisingRequest, ListingCategory } from "@/lib/types";
 
 interface PostRequestFormProps {
   requestId?: string;
@@ -20,10 +20,19 @@ export default function PostRequestForm({ requestId, initialData }: PostRequestF
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    title: string;
+    city: string;
+    category: ListingCategory;
+    budget: string;
+    duration: string;
+    description: string;
+    contact_phone: string;
+    contact_email: string;
+  }>({
     title: "",
     city: "",
-    category: "cars" as const,
+    category: "cars",
     budget: "",
     duration: "",
     description: "",
@@ -192,7 +201,7 @@ export default function PostRequestForm({ requestId, initialData }: PostRequestF
             id="category"
             required
             value={form.category}
-            onChange={(e) => setForm((f) => ({ ...f, category: e.target.value as typeof form.category }))}
+            onChange={(e) => setForm((f) => ({ ...f, category: e.target.value as ListingCategory }))}
             className="mt-1 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-text focus:border-primary focus:ring-1 focus:ring-primary"
           >
             {CATEGORIES.map((c) => (

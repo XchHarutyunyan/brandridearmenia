@@ -17,14 +17,14 @@ export default function Footer() {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
-      className="border-t border-slate-200 bg-white py-16"
+      className="border-t border-slate-200 bg-white py-10 sm:py-16"
     >
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between">
-          <p className="max-w-md text-center text-slate-600 md:text-left">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 min-w-0">
+        <div className="flex flex-col items-center gap-6 sm:gap-8 md:flex-row md:justify-between">
+          <p className="max-w-md text-center text-sm sm:text-base text-slate-600 md:text-left px-1">
             Brand Ride Armenia — {t("home.heroTitle")}
           </p>
-          <ul className="flex items-center gap-8">
+          <ul className="flex flex-wrap items-center justify-center gap-4 sm:gap-8">
             {footerLinks.map((link) => (
               <li key={link.href}>
                 <Link
@@ -37,7 +37,7 @@ export default function Footer() {
             ))}
           </ul>
         </div>
-        <p className="mt-8 text-center text-sm text-slate-400">
+        <p className="mt-6 sm:mt-8 text-center text-xs sm:text-sm text-slate-400 px-2">
           © {new Date().getFullYear()} Brand Ride Armenia. All rights reserved.
         </p>
       </div>

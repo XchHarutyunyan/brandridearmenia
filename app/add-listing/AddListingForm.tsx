@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabaseClient";
 import { useLocale } from "@/context/LocaleContext";
 import { CATEGORIES } from "@/lib/types";
-import type { Listing } from "@/lib/types";
+import type { Listing, ListingCategory } from "@/lib/types";
 
 interface AddListingFormProps {
   listingId?: string;
@@ -19,9 +19,17 @@ export default function AddListingForm({ listingId, initialData }: AddListingFor
   const supabase = createClient();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    title: string;
+    category: ListingCategory;
+    city: string;
+    price: string;
+    description: string;
+    contact_email: string;
+    contact_phone: string;
+  }>({
     title: "",
-    category: "cars" as const,
+    category: "cars",
     city: "",
     price: "",
     description: "",
@@ -140,7 +148,7 @@ export default function AddListingForm({ listingId, initialData }: AddListingFor
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       onSubmit={handleSubmit}
-      className="mt-8 rounded-card bg-white p-8 shadow-soft"
+      className="mt-6 sm:mt-8 rounded-card bg-white p-4 sm:p-8 shadow-soft min-w-0"
     >
       <h1 className="text-3xl font-bold text-text">{isEdit ? t("addSpace.editTitle") : t("addSpace.title")}</h1>
       <p className="mt-2 text-slate-600">{isEdit ? t("addSpace.editSubtitle") : t("addSpace.subtitle")}</p>
@@ -171,7 +179,7 @@ export default function AddListingForm({ listingId, initialData }: AddListingFor
             id="category"
             required
             value={form.category}
-            onChange={(e) => setForm((f) => ({ ...f, category: e.target.value as typeof form.category }))}
+            onChange={(e) => setForm((f) => ({ ...f, category: e.target.value as ListingCategory }))}
             className="mt-1 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-text focus:border-primary focus:ring-1 focus:ring-primary"
           >
             {CATEGORIES.map((c) => (

@@ -35,7 +35,7 @@ export default function ListingCard({ listing, index = 0, onEdit, onDelete }: Li
   const showActions = Boolean(onEdit || onDelete);
 
   const cardContent = (
-    <div className="overflow-hidden rounded-card bg-white shadow-soft transition-shadow duration-300 group-hover:shadow-soft-lg">
+    <div className="overflow-hidden rounded-card bg-white shadow-soft transition-shadow duration-300 group-hover:shadow-soft-lg min-w-0">
       <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
         <Image
           src={imageUrl}
@@ -96,7 +96,7 @@ export default function ListingCard({ listing, index = 0, onEdit, onDelete }: Li
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: index * 0.06 }}
       whileHover={{ scale: 1.02, y: -4 }}
-      className="group"
+      className="group min-w-0"
     >
       {showActions ? (
         <div className="flex flex-col">

@@ -133,9 +133,9 @@ export default function RequestCard({ request, index = 0, detailUrl, onEdit, onD
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: index * 0.06 }}
       whileHover={detailUrl ? { scale: 1.02, y: -4 } : undefined}
-      className={`group overflow-hidden rounded-card bg-white shadow-soft transition-shadow duration-300 ${detailUrl ? "cursor-pointer hover:shadow-soft-lg" : "hover:shadow-soft-lg"}`}
+      className={`group overflow-hidden rounded-card bg-white shadow-soft transition-shadow duration-300 min-w-0 ${detailUrl ? "cursor-pointer hover:shadow-soft-lg" : "hover:shadow-soft-lg"}`}
     >
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         <div className="flex items-start gap-3">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
             <Icon className="h-6 w-6" />

@@ -66,16 +66,18 @@ export default function Navbar() {
       transition={{ duration: 0.4 }}
       className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/80 backdrop-blur-md shadow-soft"
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-2 sm:gap-4 md:gap-6 px-4 py-3 sm:px-6 sm:py-4 min-w-0">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-text hover:text-primary transition-colors rounded"
+          className="inline-flex items-center gap-2 text-text hover:text-primary transition-colors rounded min-w-0 shrink-0"
           aria-label="Brand Ride Armenia — Home"
         >
           <Mascot size={48} className="shrink-0" />
-          <span className="text-xl font-semibold tracking-tight">Brand Ride Armenia</span>
+          <span className="hidden min-[600px]:inline text-xl font-semibold tracking-tight truncate">
+            Brand Ride Armenia
+          </span>
         </Link>
-        <ul className="hidden md:flex items-center gap-6">
+        <ul className="hidden md:flex items-center gap-6 shrink-0">
           {publicNavLinks.map((link) => (
             <li key={link.href}>
               <Link
@@ -102,12 +104,12 @@ export default function Navbar() {
               </li>
             ))}
         </ul>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <div className="relative">
             <button
               type="button"
               onClick={() => setLocaleOpen((o) => !o)}
-              className="flex items-center gap-1.5 rounded-button border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
+              className="flex items-center gap-1.5 rounded-button border border-slate-200 px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-medium text-slate-600 hover:bg-slate-50"
               aria-label="Language"
             >
               <Globe className="h-4 w-4" />
@@ -144,18 +146,18 @@ export default function Navbar() {
             <>
               <Link
                 href="/dashboard"
-                className="flex items-center gap-2 rounded-button bg-secondary px-4 py-2 text-sm font-medium text-text hover:bg-slate-200/80 transition-colors"
+                className="flex items-center gap-1.5 sm:gap-2 rounded-button bg-secondary px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-text hover:bg-slate-200/80 transition-colors"
               >
-                <User className="h-4 w-4" />
+                <User className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
                 {t("nav.dashboard")}
               </Link>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleSignOut}
-                className="flex items-center gap-2 rounded-button border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors"
+                className="flex items-center gap-1.5 sm:gap-2 rounded-button border border-slate-200 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors"
               >
-                <LogOut className="h-4 w-4" />
+                <LogOut className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
                 {t("nav.signOut")}
               </motion.button>
             </>
@@ -163,14 +165,14 @@ export default function Navbar() {
             <>
               <Link
                 href="/login"
-                className="flex items-center gap-2 rounded-button border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors"
+                className="flex items-center gap-1.5 sm:gap-2 rounded-button border border-slate-200 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors"
               >
-                <LogIn className="h-4 w-4" />
+                <LogIn className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
                 {t("nav.login")}
               </Link>
               <Link
                 href="/register"
-                className="flex items-center gap-2 rounded-button bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 transition-colors shadow-soft"
+                className="flex items-center gap-1.5 sm:gap-2 rounded-button bg-primary px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-white hover:bg-blue-600 transition-colors shadow-soft"
               >
                 {t("nav.register")}
               </Link>

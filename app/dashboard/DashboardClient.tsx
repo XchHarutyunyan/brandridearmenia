@@ -64,11 +64,11 @@ export default function DashboardClient({ currentUserId, listings, requests }: D
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mx-auto max-w-7xl px-6 py-12"
+      className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 min-w-0"
     >
-      <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-text">{t("dashboard.title")}</h1>
+      <div className="flex flex-col gap-4 sm:gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-bold text-text sm:text-3xl">{t("dashboard.title")}</h1>
           <p className="mt-1 text-slate-600">{t("dashboard.subtitle")}</p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -84,12 +84,12 @@ export default function DashboardClient({ currentUserId, listings, requests }: D
       </div>
 
       {/* Tabs */}
-      <div className="mt-10 border-b border-slate-200">
-        <nav className="flex gap-1" aria-label="Tabs">
+      <div className="mt-8 sm:mt-10 border-b border-slate-200 overflow-x-auto">
+        <nav className="flex gap-1 min-w-0" aria-label="Tabs">
           <button
             type="button"
             onClick={() => setActiveTab("spaces")}
-            className={`rounded-t-lg px-5 py-3 text-sm font-medium transition-colors ${
+            className={`shrink-0 rounded-t-lg px-3 py-2.5 sm:px-5 sm:py-3 text-xs sm:text-sm font-medium transition-colors ${
               activeTab === "spaces"
                 ? "border-b-2 border-primary text-primary bg-white -mb-px"
                 : "text-slate-600 hover:text-text hover:bg-slate-50"
@@ -105,7 +105,7 @@ export default function DashboardClient({ currentUserId, listings, requests }: D
           <button
             type="button"
             onClick={() => setActiveTab("requests")}
-            className={`rounded-t-lg px-5 py-3 text-sm font-medium transition-colors ${
+            className={`shrink-0 rounded-t-lg px-3 py-2.5 sm:px-5 sm:py-3 text-xs sm:text-sm font-medium transition-colors ${
               activeTab === "requests"
                 ? "border-b-2 border-primary text-primary bg-white -mb-px"
                 : "text-slate-600 hover:text-text hover:bg-slate-50"
@@ -125,7 +125,7 @@ export default function DashboardClient({ currentUserId, listings, requests }: D
       {activeTab === "spaces" && (
         <section className="mt-6">
           {listings.length > 0 ? (
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3 min-w-0">
               {listings.map((listing, i) => (
                 <ListingCard
                   key={listing.id}
@@ -155,7 +155,7 @@ export default function DashboardClient({ currentUserId, listings, requests }: D
       {activeTab === "requests" && (
         <section className="mt-6">
           {requests.length > 0 ? (
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3 min-w-0">
               {requests.map((request, i) => (
                 <RequestCard
                   key={request.id}

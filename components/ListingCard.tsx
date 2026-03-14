@@ -1,0 +1,74 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { MapPin } from "lucide-react";
+import { useLocale } from "@/context/LocaleContext";
+import { CATEGORY_ICONS } from "@/lib/categories";
+import type { Listing } from "@/lib/types";
+
+const placeholderImage = "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800&q=80";
+
+function getImageUrls(listing: Listing): string[] {
+  const urls = listing.photo_urls && listing.photo_urls.length > 0
+    ? listing.photo_urls
+    : listing.image_url
+      ? [listing.image_url]
+      : [];
+  return urls.length > 0 ? urls : [placeholderImage];
+}
+
+interface ListingCardProps {
+  listing: Listing;
+  index?: number;
+}
+
+export default function ListingCard({ listing, index = 0 }: ListingCardProps) {
+  const { t } = useLocale();
+  const imageUrls = getImageUrls(listing);
+  const imageUrl = imageUrls[0];
+  const Icon = CATEGORY_ICONS[listing.category];
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: index * 0.06 }}
+      whileHover={{ scale: 1.02, y: -4 }}
+      className="group"
+    >
+      <Link href={`/listings/${listing.id}`}>
+        <div className="overflow-hidden rounded-card bg-white shadow-soft transition-shadow duration-300 group-hover:shadow-soft-lg">
+          <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
+            <Image
+              src={imageUrl}
+              alt={listing.title}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              unoptimized={imageUrl.startsWith("data:") || !imageUrl.includes("unsplash")}
+            />
+            <span className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-text shadow-soft">
+              <Icon className="h-3 w-3" />
+              {t(`categories.${listing.category}`)}
+            </span>
+          </div>
+          <div className="p-5">
+            <h3 className="font-semibold text-text line-clamp-1 group-hover:text-primary transition-colors">
+              {listing.title}
+            </h3>
+            <p className="mt-1 flex items-center gap-1 text-sm text-slate-600">
+              <MapPin className="h-4 w-4 shrink-0" />
+              {listing.city}
+            </p>
+            <p className="mt-3 text-lg font-semibold text-primary">
+              ${listing.price}
+              <span className="text-sm font-normal text-slate-500">{t("spaces.perMonth")}</span>
+            </p>
+          </div>
+        </div>
+      </Link>
+    </motion.article>
+  );
+}
